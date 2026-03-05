@@ -1,0 +1,43 @@
+version: '3.8'  
+services:  
+  kamailio:  
+    image: kamailio/kamailio:latest  
+    container_name: kamailio  
+    environment:  
+      - KAMAILIO_DB_URL=mysql://kamailio:kamailio@mysql/kamailio  
+      - KAMAILIO_LOG_LEVEL=3  
+    volumes:  
+      - kamailio_data:/var/lib/kamailio  
+    networks:  
+      - telco_network  
+    healthcheck:  
+      test: ['CMD', 'kamctl', 'uload']  
+      interval: 30s  
+      timeout: 10s  
+      retries: 5  
+
+  mysql:  
+    image: mysql:5.7  
+    container_name: mysql  
+    environment:  
+      - MYSQL_ROOT_PASSWORD=root  
+      - MYSQL_DATABASE=kamailio  
+      - MYSQL_USER=kamailio  
+      - MYSQL_PASSWORD=kamailio  
+    volumes:  
+      - mysql_data:/var/lib/mysql  
+    networks:  
+      - telco_network  
+    healthcheck:  
+      test: ['CMD', 'mysql', '-u', 'root', '-p$MYSQL_ROOT_PASSWORD', '-e', 'SELECT 1']  
+      interval: 30s  
+      timeout: 10s  
+      retries: 5  
+
+volumes:  
+  kamailio_data:  
+  mysql_data:  
+
+networks:  
+  telco_network:  
+    driver: bridge

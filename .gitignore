@@ -1,0 +1,23 @@
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Compiled artifacts
+*.class
+*.o
+*.exe
+*.out
+*.a
+
+# Environment files
+.env
+
+# IDE configurations
+.idea/
+*.sublime-workspace
+*.sublime-project
+.vscode/
+settings.json
